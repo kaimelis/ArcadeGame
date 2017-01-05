@@ -13,5 +13,10 @@ namespace UI.MENU
             SetXY(width, height);
             _choice = choice;
         }
+
+        public void Scroll(float x, float y)
+        {
+            SetXY(game.width / 2 - (x  / 10), game.height / 2 + -(y  / 10));
+        }
     }
 }

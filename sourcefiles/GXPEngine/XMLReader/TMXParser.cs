@@ -1,14 +1,14 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Xml.Serialization;
 
 namespace XMLReader
 {
-    class TMXParser
+    public class TmxParser
     {
 
-        public TMXParser()
-        {
-        }
+        public TmxParser()
+        {}
 
         /// <summary>
         /// Parse a TMX file
@@ -22,6 +22,9 @@ namespace XMLReader
             TextReader reader = new StreamReader(filename);
             Map map = serializer.Deserialize(reader) as Map;
             reader.Close();
+
+            Console.WriteLine("\n TMX filename is " + filename);
+            Console.WriteLine(map);
 
             return map;
         }

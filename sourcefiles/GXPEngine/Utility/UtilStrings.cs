@@ -15,8 +15,9 @@ namespace Utility
         public static readonly string SpritesObject = AssetPath + "sprite/object/";
 
         //SOUNDS & MUSIC
-        public static readonly string SoundsMenu = AssetPath + "sounds/ui/menu/";
+        public static readonly string SoundsMenu = AssetPath + "sounds/menu/";
         public static readonly string SoundsLevel = AssetPath + "sounds/level/";
+        public static readonly string SoundsEffect = AssetPath + "sounds/effects/";
 
         //DEBUG RESOURCES
         public static readonly string SpritesDebug = AssetPath + "sprite/debug/";

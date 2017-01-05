@@ -5,14 +5,14 @@ using UI.MENU;
 
 public class MyGame : Game //MyGame is a Game
 {
-    private Level.Level _level;
+    private Level _level;
     private MainMenu _menu;
+
     private string[] _levelNames;
-    private int _score = 0;
     private string _state;
 
     //initialize game here
-    public MyGame () : base(1920, 1080, false)
+    public MyGame () : base(1024, 768, false)
 	{
         PopulateLevelNames();
         SetState("MainMenu");
@@ -22,8 +22,7 @@ public class MyGame : Game //MyGame is a Game
     {
         _levelNames = new[]
         {
-                "Level01",
-                "Level02"
+                "Level01"
             };
     }
 
@@ -62,11 +61,11 @@ public class MyGame : Game //MyGame is a Game
                 _level.Destroy();
                 _level = null;
                 break;
-            case "Level02":
-                //_level.StopMusic();
-                _level.Destroy();
-                _level = null;
-                break;
+            //case "Level02":
+            //    //_level.StopMusic();
+            //    _level.Destroy();
+            //    _level = null;
+            //    break;
             //case "Credits":
             //    _credits.StopMusic();
             //    _credits.Destroy();
@@ -84,13 +83,13 @@ public class MyGame : Game //MyGame is a Game
                 AddChild(_menu);
                 break;
             case "Level01":
-                _level = new Level.Level("level01.tmx", this);
+                _level = new Level("Level01.tmx", this);
                 AddChild(_level);
                 break;
-            case "Level02":
-                _level = new Level.Level("level02.tmx", this);
-                AddChild(_level);
-                break;
+            //case "Level02":
+            //   // _level = new Level.Level("level02.tmx", this);
+            //    //AddChild(_level);
+            //    break;
             //case "Credits":
             //    _credits = new Credits(this);
             //    AddChild(_credits);
@@ -115,17 +114,6 @@ public class MyGame : Game //MyGame is a Game
     //    AddChild(_gameOver);
     //}
 
-    public void AddToScore(int score)
-    {
-        _score += score;
-    }
-
-    public int GetScore()
-    {
-        return _score;
-    }
-
-
     public void NextLevel()
     {
         for (int i = 0; i < _levelNames.Length; i++)
@@ -139,7 +127,7 @@ public class MyGame : Game //MyGame is a Game
                 }
                 else
                 {
-                    SetState("Credits");
+                  //  SetState("Credits");
                     break;
                 }
             }

@@ -1,0 +1,7 @@
+﻿
+namespace Objects
+{
+    class MovingTile
+    {
+    }
+}

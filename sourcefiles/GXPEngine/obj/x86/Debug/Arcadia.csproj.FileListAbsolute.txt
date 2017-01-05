@@ -1,0 +1,6 @@
+C:\Users\Bambukas\Desktop\Bambukas\mokslai\1.2\Project\sourcefiles\GXPEngine\bin\Debug\Arcadia.exe.config
+C:\Users\Bambukas\Desktop\Bambukas\mokslai\1.2\Project\sourcefiles\GXPEngine\bin\Debug\Arcadia.exe
+C:\Users\Bambukas\Desktop\Bambukas\mokslai\1.2\Project\sourcefiles\GXPEngine\bin\Debug\Arcadia.pdb
+C:\Users\Bambukas\Desktop\Bambukas\mokslai\1.2\Project\sourcefiles\GXPEngine\obj\x86\Debug\Arcadia.csprojResolveAssemblyReference.cache
+C:\Users\Bambukas\Desktop\Bambukas\mokslai\1.2\Project\sourcefiles\GXPEngine\obj\x86\Debug\Arcadia.exe
+C:\Users\Bambukas\Desktop\Bambukas\mokslai\1.2\Project\sourcefiles\GXPEngine\obj\x86\Debug\Arcadia.pdb

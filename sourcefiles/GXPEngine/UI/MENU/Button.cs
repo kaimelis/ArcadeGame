@@ -36,7 +36,7 @@ namespace UI.MENU
         //Should get called when the button is being pressed, it returns the gamestate to which the game should be set
         public string Pressed()
         {
-            _selectSound.Play();
+            //_selectSound.Play();
             return _state;
         }
     }

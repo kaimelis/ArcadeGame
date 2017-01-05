@@ -8,3 +8,4 @@ C:\Users\Bambukas\Desktop\Bambukas\mokslai\1.2\Project\sourcefiles\GXPEngine\obj
 C:\Users\Bambukas\Desktop\Bambukas\mokslai\1.2\Project\sourcefiles\GXPEngine\bin\Debug\GXPEngine.exe
 C:\Users\Bambukas\Desktop\Bambukas\mokslai\1.2\Project\sourcefiles\GXPEngine\bin\Debug\GXPEngine.pdb
 C:\Users\Bambukas\Desktop\Bambukas\mokslai\1.2\Project\sourcefiles\GXPEngine\obj\x86\Debug\GXPEngine.csprojResolveAssemblyReference.cache
+C:\Users\Bambukas\Desktop\Bambukas\mokslai\1.2\Project\sourcefiles\GXPEngine\bin\Debug\GXPEngine.exe.config
