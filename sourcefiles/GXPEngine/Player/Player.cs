@@ -1,138 +1,146 @@
 ﻿using System;
 using GXPEngine;
 using Objects;
+using Utility;
 using Vectors;
 
-public class Player : AnimSprite
+namespace Player
 {
-
-    private float _maxSpeed = 6.5f;
-    private float _ySpeed = 0.0f;
-    private float _xSpeed = 0.0f;
-
-    private float _currentFrame = 0.0f;
-    private float _lastFrame = 82;
-    private int _direction = 0;
-    private float _frame = 0;
-
-    private bool onGround = false;
-
-    private Level _level;
-    private GrassTile _grassTile;
-    private FireBall _fireball;
-    private float _rotation;
-
-    public Player(Level level) : base("boy.png", 9, 10)
+    public class Player : AnimSprite
     {
-        SetOrigin(width / 2, height);
-        x = game.width / 2;
-        _level = level;
-       // SetAnimationRange(0, 17);
-        _direction = 1;
-        _xSpeed = _maxSpeed;
-    }
+        private float _frame;
+        private float _lastFrame = 12;
+        private float _direction = 0;
 
-    private void Update()
-    {
-        Gravity();
-        FrameRate();
-        SimpleMoving();
-    }
+        private float _xSpeed = 0;
+        private float _ySpeed = 0;
+        private float _maxSpeed = 5;
+        private float _maxYspeed = 15f;
+        private bool _isGrounded;
+        private int _jumpCount;
 
-    private void SimpleMoving()
-    {
-        //move left
-        if (Input.GetKey(Key.A))
+        private float _lastKnownGoodX = 0.0f;
+        private float _lastKnownGoodY = 0.0f;
+
+        public Player() : base("boy.png", 8, 2)
         {
-            SetAnimationRange(0, 18);
-            _direction = -1;
-            _xSpeed = _maxSpeed;
-
-        }
-        //move right
-        else if (Input.GetKey(Key.D))
-        {
-            SetAnimationRange(0, 18);
             _direction = 1;
             _xSpeed = _maxSpeed;
         }
-        //jump
-        else if (Input.GetKeyDown(Key.SPACE))
+
+        private void Update()
         {
-            
-        }
-        else if (Input.GetKeyDown(Key.F))
-        {
-            if (_direction == 1)
-                _rotation = 0;
-            else _rotation = 180;
-            _fireball = new FireBall(Utility.UtilStrings.SpritesPlayer + "fireball.png",_rotation ,new Vec2(x, y));
-            game.AddChildAt(_fireball,1);
-        }
-        //idle
-        else
-        {
-            SetAnimationRange(18, 80);
-            _xSpeed *= 0.4f;
+            storePosition();
+            FrameRate();
+            Movement();
+            Gravity();
         }
 
-        DoMove((_direction * _xSpeed), 0);
-        scaleX = _direction;
-    }
-
-    private void DoMove(float moveX, float moveY)
-    {
-        x += moveX;
-        y += moveY;
-        HandleCollisions(moveX, moveY);
-    }
-
-    private void Gravity()
-    {
-        DoMove(0, _ySpeed);
-        _ySpeed = _ySpeed + 1.0f;
-
-        if (onGround == true)
+        private void Movement()
         {
 
-            if (Input.GetKey(Key.F))
+
+            if (Input.GetKey(Key.RIGHT))
             {
-                _ySpeed = -20.0f;
-                onGround = false;
+                _direction = 1;
+                SetAnimationRange(0, 7);
+                _xSpeed = _maxSpeed;
+            }
+            else if (Input.GetKey(Key.LEFT))
+            {
+                _direction = -1;
+                SetAnimationRange(0, 7);
+                _xSpeed = -_maxSpeed;
+            }
+            else
+            {
+                _xSpeed *= 0.8f;
+                SetAnimationRange(0, 0);
+
+            }
+            if (Input.GetKeyDown(Key.SPACE) )
+            {
+                SetAnimationRange(0, 8);//why it's not called?
+                Console.WriteLine(_currentFrame + " " + _lastFrame);
+                Console.WriteLine("fire");
+            }
+
+            if (Input.GetKey(Key.UP) && _ySpeed < _maxYspeed && _isGrounded && _jumpCount < 2)
+            {
+                _ySpeed = -30.0f;
+                _jumpCount++;
+                _isGrounded = false;
+                SetAnimationRange(9, 11);//why it's not called?
+
+            }
+            Move(_xSpeed,0);
+            scaleX = _direction;
+
+        }
+
+        private void Move(float xSpeed , float ySpeed)
+        {
+            x += xSpeed;
+            y += ySpeed;
+            HandleCollision(xSpeed, ySpeed);
+        }
+
+        private void HandleCollision(float moveX, float moveY)
+        {
+            foreach (GameObject other in GetCollisions())
+            {
+                Collisions(other, moveX,moveY);
             }
         }
-    }
 
-    private void HandleCollisions(float moveX, float moveY)
-    {
-        foreach (GameObject other in GetCollisions())
+        private void Collisions(GameObject other, float moveX, float moveY)
         {
-            HandleCollision(other, moveX, moveY);
+            if (other is Tile1)
+            {
+               // if(moveY > 0)
+                _isGrounded = true;
+                MoveBack();// with this i can jump but not move ehhhhhh.............
+                _ySpeed = 0f;
+                _jumpCount = 0;
+            }
         }
-    }
 
-    private void HandleCollision(GameObject other, float moveX, float moveY)
-    {
-        if (other is GrassTile)
+        private void Gravity()
         {
-            _grassTile = other as GrassTile;
-            if (moveY > 0)
-                onGround = true;
-            _ySpeed = 0.0f;
+            Move(0, _ySpeed);
+            _ySpeed +=2f;
         }
-    }
 
-    private void FrameRate()
-    {
-        _frame = _frame + 0.6f;
-        if (_frame >= _lastFrame + 1) _frame = _currentFrame;
-        if (_frame < _currentFrame) _frame = _currentFrame;
-        SetFrame((int)_frame);
-    }
 
-    private void SetAnimationRange(int first, int last)
-    {
-        _currentFrame = first;
-        _lastFrame = last;
+        void storePosition()
+        {
+           // _lastKnownGoodX = x;
+            _lastKnownGoodY = y;
+        }
+
+        void restorePosition()
+        {
+           // x = _lastKnownGoodX;
+            y = _lastKnownGoodY;
+        }
+
+        public void MoveBack()
+        {
+            restorePosition();
+        }
+
+        private void FrameRate()
+        {
+            _frame +=  0.3f;
+            if (_frame >= _lastFrame + 1) _frame = _currentFrame;
+            if (_frame < _currentFrame) _frame = _currentFrame;
+            SetFrame((int)_frame);
+        }
+
+        private void SetAnimationRange(int first, int last)
+        {
+            _currentFrame = first;
+            _lastFrame = last; 
+        }
     }
 }

@@ -72,10 +72,12 @@
     <Compile Include="Level\Level.cs" />
     <Compile Include="MyGame.cs" />
     <Compile Include="Objects\Grass.cs" />
-    <Compile Include="Objects\GrassTile.cs" />
-    <Compile Include="Objects\MovingTile.cs" />
+    <Compile Include="Objects\Tile1.cs" />
+    <Compile Include="Objects\Tile2.cs" />
+    <Compile Include="Objects\Tile3.cs" />
     <Compile Include="Player\FireBall.cs" />
     <Compile Include="Player\Player.cs" />
+    <Compile Include="Player\Trail.cs" />
     <Compile Include="UI\GameOverScreen.cs" />
     <Compile Include="UI\HUD\Hearts.cs" />
     <Compile Include="UI\HUD\HighScore.cs" />

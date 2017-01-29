@@ -1,10 +1,10 @@
 ﻿using System;
 using GXPEngine;
 using Objects;
-using UI.MENU;
 using Utility;
+using Vectors;
 using XMLReader;
-
+//enum for level of tiles. then check on which we are and if button pressed turn off collision :P
 public class Level : GameObject
 {
     private int _tileWeight;
@@ -16,8 +16,10 @@ public class Level : GameObject
 
     private Map _map;
     private MyGame _game;
-    private Player _player;
-    private GrassTile ground;
+    private Player.Player _player;
+    private Tile1 _tile1;
+    private Tile2 _tile2;
+    private Tile3 _tile3;
     private Grass _grass;
     private Sprite _background1;
     private Sprite _background2;
@@ -28,11 +30,13 @@ public class Level : GameObject
     private Sprite _clouds11;
     private Sprite _clouds2;
     private Sprite _clouds22;
+    private SoundChannel _musicChannel;
 
     public Level(string filename, MyGame game)
     {
         _game = game;
         CreateLevel(filename);
+        AddMusic();
     }
 
     void Update()
@@ -40,6 +44,13 @@ public class Level : GameObject
         Camera();
         HandleClouds();
         HandleBackground();
+        
+    }
+
+    private void AddMusic()
+    {
+        Sound music = new Sound(UtilStrings.SoundsLevel + "level.mp3", true, true);
+        _musicChannel = music.Play();
     }
 
     private void Camera()
@@ -49,10 +60,7 @@ public class Level : GameObject
             x = Rightborder - _player.x;
         }
         if (_player.x < Leftborder)
-        {
             x = Leftborder - _player.x;
-        }
-            
     }
 
     private void SetBackground()
@@ -125,9 +133,7 @@ public class Level : GameObject
         _tilesName = _map.Tileset.Image.Source;
         Console.WriteLine(_tilesName);
 
-        Layer[] layers = _map.Layer;
-        foreach (Layer pLayer in layers)
-            InterpretLayer(pLayer);
+        /**/
         ObjectGroup[] objectGroups = _map.ObjectGroup;
         for (int i = 0; i < objectGroups.Length; i++)
         {
@@ -138,37 +144,18 @@ public class Level : GameObject
             }
             else interpretObjectGroup(objectGroups[i]);
         }
-    }
-
-    private void interpretObjectGroup(ObjectGroup objectGroup)
-    {
-        TiledObject[] objects = objectGroup.TiledObject;
-        for (int i = 0; i < objects.Length; i++)
-        {
-            interpretObject(objects[i]);
-        }
-    }
-
-    //adding objects
-    private void interpretObject(TiledObject tiledObject)
-    {
-        switch (tiledObject.GID)
-        {
-            case 10:
-                _player = new Player(this);
-                _player.SetOrigin(_player.width/2,_player.height/2);
-                _player.x = tiledObject.X + _player.width/2;
-                _player.y = tiledObject.Y - _player.height/2;
-                AddChild(_player);
-                break;
-        }
+        /**/
+        Layer[] layers = _map.Layer;
+        foreach (Layer pLayer in layers)
+            InterpretLayer(pLayer);
+       
     }
 
     private void InterpretLayer(Layer layer)
     {
-        var csvData = layer.Data.InnerXml;
+        string csvData = layer.Data.InnerXml;
         csvData = csvData.Replace(Environment.NewLine, "\n");
-        var lines = csvData.Split('\n');
+        string[] lines = csvData.Split('\n');
         for (var k = 0; k < lines.Length; k++)
         {
             var colums = lines[k].Split(',');
@@ -185,10 +172,20 @@ public class Level : GameObject
     {
         switch (name)
         {
-            case "tile":
-                ground = new GrassTile(pTileFrame - 1, _tilesName);
-                ground.SetXY(pX * _tileWeight, pY * _tileHeight);
-                AddChild(ground);
+            case "tile1":
+                _tile1 = new Tile1(pTileFrame - 1, _tilesName);
+                _tile1.SetXY(pX * _tileWeight, pY * _tileHeight);
+                AddChild(_tile1);
+                break;
+            case "tile2":
+                _tile2 = new Tile2(pTileFrame - 1, _tilesName);
+                _tile2.SetXY(pX * _tileWeight, pY * _tileHeight);
+                AddChild(_tile2);
+                break;
+            case "tile3":
+                _tile3 = new Tile3(pTileFrame - 1, _tilesName);
+                _tile3.SetXY(pX * _tileWeight, pY * _tileHeight);
+                AddChild(_tile3);
                 break;
             case "grass":
                 _grass = new Grass(pTileFrame -1, _tilesName);
@@ -198,4 +195,30 @@ public class Level : GameObject
         }
        
     }
- }
+
+    private void interpretObjectGroup(ObjectGroup objectGroup)
+    {
+        TiledObject[] objects = objectGroup.TiledObject;
+        for (int i = 0; i < objects.Length; i++)
+        {
+            interpretObject(objects[i]);
+        }
+    }
+
+    //adding objects
+    private void interpretObject(TiledObject tiledObject)
+    {
+        switch (tiledObject.GID)
+        {
+            case 16:
+                _player = new Player.Player();
+                _player.SetOrigin(_player.width /2, _player.height / 2);
+                _player.x = tiledObject.X + _player.width/2;
+                _player.y = tiledObject.Y - _player.height / 2;
+                AddChild(_player);
+                break;
+            
+
+        }
+    }
+}

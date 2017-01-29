@@ -4,24 +4,37 @@ using Vectors;
 public class FireBall : Sprite
 {
     private Vec2 _position;
-    private Vec2 _direction;
-    private Player _player;
+    private Vec2 _velocity;
+    private Player.Player _player;
     private int _fireballSpeed = 10;
 
-    public FireBall(string filename, float rotation, Vec2 position) : base(filename)
+    public FireBall(string filename, Vec2 pPosition = null, Vec2 pVelocity = null) : base(filename)
     {
         SetOrigin(width/2, height/2);
-        _position = position;
-        _direction = Vec2.GetUnitVectorDegrees(rotation);
-        _direction.Normalize();
+        _position = pPosition;
+        _velocity = pVelocity;
+        x = _position.x;
+        y = _position.y;
+        SetOrigin(width / 2, height / 2);
+    }
+
+    public Vec2 position
+    {
+        set{ _position = value ?? Vec2.zero; }
+        get{ return _position; }
+    }
+
+    public Vec2 velocity
+    {
+        set{ _velocity = value ?? Vec2.zero; }
+        get{ return _velocity; }
     }
 
     void Update()
     {
-        _position.x += _direction.x * _fireballSpeed;
-        _position.y += _direction.y * _fireballSpeed;
-        rotation = _direction.GetAngleDegrees();
-        SetXY(_position.x, _position.y);
+        _position.Add(_velocity);
+        x = _position.x;
+        y = _position.y;
     }
 }
 
